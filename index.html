@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Journal Pro - Дневник сделок трейдера</title>
+    <style>
+        :root {
+            --color-white: rgba(255, 255, 255, 1);
+            --color-cream-50: rgba(252, 252, 249, 1);
+            --color-cream-100: rgba(255, 255, 253, 1);
+            --color-gray-200: rgba(245, 245, 245, 1);
+            --color-gray-300: rgba(167, 169, 169, 1);
+            --color-gray-400: rgba(119, 124, 124, 1);
+            --color-slate-500: rgba(98, 108, 113, 1);
+            --color-brown-600: rgba(94, 82, 64, 1);
+            --color-charcoal-700: rgba(31, 33, 33, 1);
+            --color-charcoal-800: rgba(38, 40, 40, 1);
+            --color-slate-900: rgba(19, 52, 59, 1);
+            --color-teal-300: rgba(50, 184, 198, 1);
+            --color-teal-400: rgba(45, 166, 178, 1);
+            --color-teal-500: rgba(33, 128, 141, 1);
+            --color-teal-600: rgba(29, 116, 128, 1);
+            --color-teal-700: rgba(26, 104, 115, 1);
+            --color-red-400: rgba(255, 84, 89, 1);
+            --color-red-500: rgba(192, 21, 47, 1);
+            --color-green-500: rgba(34, 197, 94, 1);
+            
+            --color-background: var(--color-cream-50);
+            --color-surface: var(--color-cream-100);
+            --color-text: var(--color-slate-900);
+            --color-text-secondary: var(--color-slate-500);
+            --color-primary: var(--color-teal-500);
+            --color-primary-hover: var(--color-teal-600);
+            --color-success: var(--color-green-500);
+            --color-error: var(--color-red-500);
+            --color-border: rgba(94, 82, 64, 0.2);
+            
+            --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-family-mono: 'Berkeley Mono', ui-monospace, monospace;
+            --font-size-sm: 12px;
+            --font-size-base: 14px;
+            --font-size-md: 16px;
+            --font-size-lg: 18px;
+            --font-size-xl: 20px;
+            --font-size-2xl: 24px;
+            --font-weight-normal: 400;
+            --font-weight-medium: 500;
+            --font-weight-semibold: 600;
+            
+            --space-4: 4px;
+            --space-8: 8px;
+            --space-12: 12px;
+            --space-16: 16px;
+            --space-20: 20px;
+            --space-24: 24px;
+            --space-32: 32px;
+            
+            --radius-sm: 6px;
+            --radius-base: 8px;
+            --radius-md: 10px;
+            --radius-lg: 12px;
+            
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-base);
+            background-color: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-16);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--color-teal-500) 0%, var(--color-teal-600) 100%);
+            color: white;
+            padding: var(--space-32) var(--space-16);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-32);
+            box-shadow: var(--shadow-md);
+        }
+
+        .header h1 {
+            font-size: var(--font-size-2xl);
+            margin-bottom: var(--space-8);
+        }
+
+        .header p {
+            font-size: var(--font-size-sm);
+            opacity: 0.95;
+            margin: 0;
+        }
+
+        /* Main Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-24);
+            margin-bottom: var(--space-32);
+        }
+
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Form Section */
+        .form-section {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-24);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .form-section h2 {
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--space-20);
+            color: var(--color-slate-900);
+        }
+
+        .form-group {
+            margin-bottom: var(--space-16);
+        }
+
+        .form-label {
+            display: block;
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            margin-bottom: var(--space-8);
+            color: var(--color-text);
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: var(--space-12) var(--space-12);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            font-family: var(--font-family-base);
+            font-size: var(--font-size-base);
+            background-color: var(--color-white);
+            color: var(--color-text);
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(33, 128, 141, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-12);
+        }
+
+        .btn {
+            padding: var(--space-12) var(--space-20);
+            border: none;
+            border-radius: var(--radius-base);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-medium);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-primary-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid var(--color-border);
+            color: var(--color-text);
+            width: auto;
+            margin-right: var(--space-12);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--color-gray-200);
+        }
+
+        .btn-danger {
+            background-color: var(--color-red-400);
+            color: white;
+            padding: var(--space-8) var(--space-12);
+            font-size: var(--font-size-sm);
+        }
+
+        .btn-danger:hover {
+            background-color: var(--color-red-500);
+        }
+
+        /* Statistics Section */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-16);
+            margin-bottom: var(--space-24);
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .stat-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            padding: var(--space-16);
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-8);
+        }
+
+        .stat-value {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text);
+        }
+
+        .stat-value.positive {
+            color: var(--color-success);
+        }
+
+        .stat-value.negative {
+            color: var(--color-error);
+        }
+
+        /* Recommendations */
+        .recommendations {
+            background: linear-gradient(135deg, rgba(50, 184, 198, 0.1) 0%, rgba(33, 128, 141, 0.05) 100%);
+            border: 1px solid rgba(33, 128, 141, 0.3);
+            border-radius: var(--radius-lg);
+            padding: var(--space-20);
+            margin-bottom: var(--space-24);
+        }
+
+        .recommendations h3 {
+            font-size: var(--font-size-md);
+            margin-bottom: var(--space-12);
+            color: var(--color-teal-600);
+        }
+
+        .recommendation-item {
+            background: white;
+            padding: var(--space-12);
+            border-radius: var(--radius-base);
+            margin-bottom: var(--space-8);
+            font-size: var(--font-size-sm);
+            border-left: 3px solid var(--color-teal-500);
+            padding-left: var(--space-16);
+        }
+
+        .recommendation-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .recommendation-item strong {
+            color: var(--color-teal-600);
+        }
+
+        /* Trades Table */
+        .trades-section {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-24);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .trades-section h2 {
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--space-20);
+            color: var(--color-slate-900);
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: var(--font-size-sm);
+        }
+
+        th {
+            background-color: var(--color-gray-200);
+            padding: var(--space-12);
+            text-align: left;
+            font-weight: var(--font-weight-semibold);
+            border-bottom: 2px solid var(--color-border);
+        }
+
+        td {
+            padding: var(--space-12);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        tr:hover {
+            background-color: var(--color-gray-200);
+        }
+
+        .trade-positive {
+            color: var(--color-success);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .trade-negative {
+            color: var(--color-error);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: var(--space-32);
+            color: var(--color-text-secondary);
+        }
+
+        .empty-state p {
+            font-size: var(--font-size-base);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: var(--space-8);
+            margin-bottom: var(--space-20);
+            border-bottom: 2px solid var(--color-border);
+        }
+
+        .tab-btn {
+            padding: var(--space-12) var(--space-16);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text-secondary);
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            color: var(--color-primary);
+            border-bottom-color: var(--color-primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Export Button */
+        .export-section {
+            margin-top: var(--space-24);
+            padding-top: var(--space-24);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .btn-export {
+            background-color: var(--color-teal-400);
+            color: white;
+            padding: var(--space-12) var(--space-20);
+        }
+
+        .btn-export:hover {
+            background-color: var(--color-teal-500);
+        }
+
+        /* Info Box */
+        .info-box {
+            background-color: rgba(33, 128, 141, 0.08);
+            border-left: 4px solid var(--color-teal-500);
+            padding: var(--space-16);
+            border-radius: var(--radius-base);
+            margin-bottom: var(--space-20);
+            font-size: var(--font-size-sm);
+        }
+
+        .info-box strong {
+            color: var(--color-teal-600);
+        }
+
+        /* Risk Summary */
+        .risk-summary {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            padding: var(--space-16);
+            margin-top: var(--space-16);
+        }
+
+        .risk-summary h4 {
+            font-size: var(--font-size-base);
+            margin-bottom: var(--space-12);
+            color: var(--color-slate-900);
+        }
+
+        .risk-bar {
+            background-color: var(--color-gray-200);
+            border-radius: var(--radius-sm);
+            height: 8px;
+            overflow: hidden;
+            margin-bottom: var(--space-8);
+        }
+
+        .risk-bar-fill {
+            height: 100%;
+            background-color: var(--color-teal-500);
+            transition: width 0.3s;
+        }
+
+        .risk-text {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📊 Trading Journal Pro</h1>
+            <p>Интеллектуальный дневник сделок с анализом риск-менеджмента и автоматическими рекомендациями</p>
+        </div>
+
+        <!-- Main Grid -->
+        <div class="main-grid">
+            <!-- Left Column: Form -->
+            <div>
+                <div class="form-section">
+                    <h2>📝 Добавить новую сделку</h2>
+
+                    <div class="info-box">
+                        <strong>💡 Совет:</strong> Заполняй форму СРАЗУ после открытия сделки, пока помнишь все детали.
+                    </div>
+
+                    <form id="tradeForm">
+                        <div class="form-group">
+                            <label class="form-label">Дата сделки</label>
+                            <input type="date" id="tradeDate" class="form-input" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Монета (BTC, ETH, ADA...)</label>
+                                <input type="text" id="tradeCoin" class="form-input" placeholder="BTC" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Тип сделки</label>
+                                <select id="tradeType" class="form-select" required>
+                                    <option value="">Выбери тип</option>
+                                    <option value="long">📈 ЛОНГ (покупка)</option>
+                                    <option value="short">📉 ШОРТ (продажа)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Цена входа ($)</label>
+                                <input type="number" id="entryPrice" class="form-input" placeholder="42000" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Цена выхода ($)</label>
+                                <input type="number" id="exitPrice" class="form-input" placeholder="42500" step="0.01" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Цена стоп-лосса ($)</label>
+                                <input type="number" id="stopLoss" class="form-input" placeholder="41500" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Размер ставки (объем)</label>
+                                <input type="number" id="positionSize" class="form-input" placeholder="0.05" step="0.001" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Депозит в момент входа ($)</label>
+                            <input type="number" id="accountSize" class="form-input" placeholder="1000" step="1" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Причина входа (укажи сигнал)</label>
+                            <select id="reason" class="form-select" required>
+                                <option value="">Выбери причину</option>
+                                <option value="support">🔧 Отскок от поддержки</option>
+                                <option value="resistance">⚪ Пробой сопротивления</option>
+                                <option value="trend">📈 Апотренд (много зеленых свечей)</option>
+                                <option value="dip">📉 Падение (покупаю на дипе)</option>
+                                <option value="breakout">💥 Прорыв уровня</option>
+                                <option value="news">📰 Новость / событие</option>
+                                <option value="fomo">😱 FOMO (все покупают)</option>
+                                <option value="other">🤔 Другое</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Комментарий (опционально)</label>
+                            <textarea id="comment" class="form-textarea" placeholder="Что ты думал перед входом?"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">✅ Сохранить сделку</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right Column: Stats & Recommendations -->
+            <div>
+                <!-- Statistics -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Всего сделок</div>
+                        <div class="stat-value" id="totalTrades">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Процент побед</div>
+                        <div class="stat-value" id="winRate">0%</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Общая P&L</div>
+                        <div class="stat-value" id="totalPnL">$0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Риск/Награда</div>
+                        <div class="stat-value" id="riskReward">0:0</div>
+                    </div>
+                </div>
+
+                <!-- Risk Analysis -->
+                <div class="risk-summary">
+                    <h4>🎯 Анализ риска (последние 5 сделок)</h4>
+                    <div class="risk-bar">
+                        <div class="risk-bar-fill" id="riskBar"></div>
+                    </div>
+                    <div class="risk-text" id="riskText">Добавь сделку чтобы увидеть анализ</div>
+                </div>
+
+                <!-- Recommendations -->
+                <div class="recommendations">
+                    <h3>🚀 Рекомендации по риск-менеджменту</h3>
+                    <div id="recommendationsContainer">
+                        <div class="recommendation-item">
+                            <strong>📝 Как начать:</strong> Добавь свою первую сделку, и я дам тебе персональные рекомендации.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trades History -->
+        <div class="trades-section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-20);">
+                <h2>📊 История сделок</h2>
+                <button class="btn btn-export" onclick="exportToCSV()">📥 Скачать CSV</button>
+            </div>
+
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('all')">Все сделки</button>
+                <button class="tab-btn" onclick="switchTab('winners')">✅ Победы</button>
+                <button class="tab-btn" onclick="switchTab('losses')">❌ Поражения</button>
+            </div>
+
+            <div id="all" class="tab-content active">
+                <div class="table-container">
+                    <table id="allTradesTable">
+                        <thead>
+                            <tr>
+                                <th>Дата</th>
+                                <th>Монета</th>
+                                <th>Тип</th>
+                                <th>Вход / Выход</th>
+                                <th>Размер</th>
+                                <th>Риск</th>
+                                <th>P&L</th>
+                                <th>%</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allTradesBody">
+                            <tr><td colspan="9" class="empty-state"><p>Нет сделок. Добавь первую! 🚀</p></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="winners" class="tab-content">
+                <div class="table-container">
+                    <table id="winnersTradesTable">
+                        <thead>
+                            <tr>
+                                <th>Дата</th>
+                                <th>Монета</th>
+                                <th>Вход / Выход</th>
+                                <th>P&L</th>
+                                <th>%</th>
+                            </tr>
+                        </thead>
+                        <tbody id="winnersTradesBody">
+                            <tr><td colspan="5" class="empty-state"><p>Еще нет побед. Будут! 💪</p></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="losses" class="tab-content">
+                <div class="table-container">
+                    <table id="lossesTradesTable">
+                        <thead>
+                            <tr>
+                                <th>Дата</th>
+                                <th>Монета</th>
+                                <th>Вход / Выход</th>
+                                <th>P&L</th>
+                                <th>%</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lossesTradesBody">
+                            <tr><td colspan="5" class="empty-state"><p>Еще нет поражений. Будут учиться! 📚</p></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Initialize with today's date
+        document.getElementById('tradeDate').valueAsDate = new Date();
+
+        // Load trades from localStorage
+        let trades = JSON.parse(localStorage.getItem('trades')) || [];
+
+        // Form submission
+        document.getElementById('tradeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const trade = {
+                id: Date.now(),
+                date: document.getElementById('tradeDate').value,
+                coin: document.getElementById('tradeCoin').value.toUpperCase(),
+                type: document.getElementById('tradeType').value,
+                entryPrice: parseFloat(document.getElementById('entryPrice').value),
+                exitPrice: parseFloat(document.getElementById('exitPrice').value),
+                stopLoss: parseFloat(document.getElementById('stopLoss').value),
+                positionSize: parseFloat(document.getElementById('positionSize').value),
+                accountSize: parseFloat(document.getElementById('accountSize').value),
+                reason: document.getElementById('reason').value,
+                comment: document.getElementById('comment').value,
+                timestamp: Date.now()
+            };
+
+            trades.push(trade);
+            localStorage.setItem('trades', JSON.stringify(trades));
+
+            // Reset form
+            document.getElementById('tradeForm').reset();
+            document.getElementById('tradeDate').valueAsDate = new Date();
+
+            updateUI();
+            alert('✅ Сделка добавлена! Спасибо за дисциплину! 🚀');
+        });
+
+        function updateUI() {
+            updateStats();
+            updateRecommendations();
+            renderTrades();
+        }
+
+        function updateStats() {
+            const totalTrades = trades.length;
+            const winners = trades.filter(t => t.type === 'long' ? t.exitPrice > t.entryPrice : t.exitPrice < t.entryPrice).length;
+            const winRate = totalTrades > 0 ? Math.round((winners / totalTrades) * 100) : 0;
+
+            let totalPnL = 0;
+            let totalRisk = 0;
+            let totalReward = 0;
+
+            trades.forEach(trade => {
+                const priceDiff = trade.type === 'long' ? trade.exitPrice - trade.entryPrice : trade.entryPrice - trade.exitPrice;
+                const pnl = priceDiff * trade.positionSize;
+                totalPnL += pnl;
+
+                const risk = (trade.entryPrice - trade.stopLoss) * trade.positionSize;
+                totalRisk += Math.abs(risk);
+
+                if (pnl > 0) {
+                    totalReward += pnl;
+                }
+            });
+
+            const riskRewardRatio = totalRisk > 0 ? (totalReward / totalRisk).toFixed(2) : '0.00';
+
+            document.getElementById('totalTrades').textContent = totalTrades;
+            document.getElementById('winRate').textContent = winRate + '%';
+            document.getElementById('totalPnL').textContent = '$' + totalPnL.toFixed(2);
+            document.getElementById('totalPnL').className = 'stat-value ' + (totalPnL >= 0 ? 'positive' : 'negative');
+            document.getElementById('riskReward').textContent = '1:' + riskRewardRatio;
+
+            // Risk bar
+            const recentTrades = trades.slice(-5);
+            let avgRiskPercent = 0;
+            if (recentTrades.length > 0) {
+                let totalRiskPercent = 0;
+                recentTrades.forEach(trade => {
+                    const risk = Math.abs(trade.entryPrice - trade.stopLoss) / trade.entryPrice * 100;
+                    totalRiskPercent += risk;
+                });
+                avgRiskPercent = totalRiskPercent / recentTrades.length;
+            }
+
+            const riskBarFill = Math.min(avgRiskPercent, 100);
+            document.getElementById('riskBar').style.width = riskBarFill + '%';
+            document.getElementById('riskText').textContent = `Средний риск на сделку (последние 5): ${avgRiskPercent.toFixed(1)}% от входа. ${avgRiskPercent > 3 ? '⚠️ СЛИШКОМ ВЫСОКО! Нужно 1-2%' : '✅ В норме'}`;
+        }
+
+        function updateRecommendations() {
+            const container = document.getElementById('recommendationsContainer');
+            const recommendations = [];
+
+            if (trades.length === 0) {
+                recommendations.push({
+                    text: '<strong>📝 Как начать:</strong> Добавь свою первую сделку, и я дам тебе персональные рекомендации.',
+                    type: 'info'
+                });
+            } else {
+                // Rule 1: Check daily risk
+                let todayRisk = 0;
+                const today = new Date().toISOString().split('T')[0];
+                trades.filter(t => t.date === today).forEach(t => {
+                    const priceDiff = t.type === 'long' ? t.exitPrice - t.entryPrice : t.entryPrice - t.exitPrice;
+                    todayRisk += Math.abs((priceDiff / t.entryPrice) * 100);
+                });
+
+                if (todayRisk > 5) {
+                    recommendations.push({
+                        text: '<strong>⚠️ Слишком много риска за день:</strong> Сегодня ты рисковал ' + todayRisk.toFixed(1) + '%. Максимум 5-10% в день!',
+                        type: 'warning'
+                    });
+                }
+
+                // Rule 2: Check individual position risk
+                const lastTrade = trades[trades.length - 1];
+                const positionRisk = Math.abs((lastTrade.entryPrice - lastTrade.stopLoss) / lastTrade.entryPrice * 100);
+                if (positionRisk > 3) {
+                    recommendations.push({
+                        text: '<strong>⚠️ Большой риск на сделку:</strong> Ты рисковал ' + positionRisk.toFixed(2) + '%. Лучше 1-2% от депозита!',
+                        type: 'warning'
+                    });
+                } else if (positionRisk <= 2) {
+                    recommendations.push({
+                        text: '<strong>✅ Идеальный риск:</strong> ' + positionRisk.toFixed(2) + '% - это отлично! Именно такой риск нужен для долгосрочного успеха.',
+                        type: 'positive'
+                    });
+                }
+
+                // Rule 3: Check win rate
+                const winners = trades.filter(t => t.type === 'long' ? t.exitPrice > t.entryPrice : t.exitPrice < t.entryPrice).length;
+                const winRate = (winners / trades.length) * 100;
+
+                if (trades.length >= 5) {
+                    if (winRate < 40) {
+                        recommendations.push({
+                            text: '<strong>📉 Низкий процент побед:</strong> ' + winRate.toFixed(0) + '%. Проанализируй свои входы: может быть ты входишь в неправильные моменты?',
+                            type: 'warning'
+                        });
+                    } else if (winRate >= 50) {
+                        recommendations.push({
+                            text: '<strong>✅ Хороший процент побед:</strong> ' + winRate.toFixed(0) + '%! Ты правильно выбираешь точки входа. Продолжай так!',
+                            type: 'positive'
+                        });
+                    }
+                }
+
+                // Rule 4: Reason analysis
+                const fomo = trades.filter(t => t.reason === 'fomo').length;
+                if (fomo > 2) {
+                    recommendations.push({
+                        text: '<strong>😱 Много FOMO-сделок:</strong> ' + fomo + ' из них. Это враг! Торгуй только по плану, не по эмоциям.',
+                        type: 'warning'
+                    });
+                }
+
+                // Rule 5: Check position size consistency
+                let avgPositionRisk = 0;
+                trades.forEach(t => {
+                    const risk = (Math.abs(t.entryPrice - t.stopLoss) * t.positionSize) / t.accountSize * 100;
+                    avgPositionRisk += risk;
+                });
+                avgPositionRisk = avgPositionRisk / trades.length;
+
+                if (avgPositionRisk > 2.5) {
+                    recommendations.push({
+                        text: '<strong>⚠️ Средний риск слишком высокий:</strong> ' + avgPositionRisk.toFixed(2) + '% от депозита. Правило 2% гласит: не рискуй больше 2% на сделку!',
+                        type: 'warning'
+                    });
+                } else if (avgPositionRisk <= 2) {
+                    recommendations.push({
+                        text: '<strong>💪 Дисциплинирован с риском:</strong> Средний риск ' + avgPositionRisk.toFixed(2) + '%. Ты следуешь правилу 2% - это основа успеха!',
+                        type: 'positive'
+                    });
+                }
+
+                // Rule 6: Three losses in a row
+                let lossStreak = 0;
+                let maxLossStreak = 0;
+                for (let i = trades.length - 1; i >= 0; i--) {
+                    const t = trades[i];
+                    const isWin = t.type === 'long' ? t.exitPrice > t.entryPrice : t.exitPrice < t.entryPrice;
+                    if (!isWin) {
+                        lossStreak++;
+                        maxLossStreak = Math.max(maxLossStreak, lossStreak);
+                    } else {
+                        lossStreak = 0;
+                    }
+                }
+
+                if (maxLossStreak >= 3) {
+                    recommendations.push({
+                        text: '<strong>⚠️ Серия поражений:</strong> Было ' + maxLossStreak + ' поражений подряд. После 3 поражений подряд - ПЕРЕРЫВ! Твой мозг не трезв.',
+                        type: 'warning'
+                    });
+                }
+            }
+
+            // Ensure we have at least one recommendation
+            if (recommendations.length === 0) {
+                recommendations.push({
+                    text: '<strong>✨ Отлично!</strong> Ты делаешь все правильно. Продолжай торговать с дисциплиной! 🚀',
+                    type: 'positive'
+                });
+            }
+
+            container.innerHTML = recommendations.map(rec => 
+                `<div class="recommendation-item" style="border-left-color: ${rec.type === 'positive' ? '#22c55e' : rec.type === 'warning' ? '#ff5459' : '#2180a8'}">${rec.text}</div>`
+            ).join('');
+        }
+
+        function renderTrades() {
+            const allBody = document.getElementById('allTradesBody');
+            const winnersBody = document.getElementById('winnersTradesBody');
+            const lossesBody = document.getElementById('lossesTradesBody');
+
+            allBody.innerHTML = '';
+            winnersBody.innerHTML = '';
+            lossesBody.innerHTML = '';
+
+            if (trades.length === 0) {
+                allBody.innerHTML = '<tr><td colspan="9" class="empty-state"><p>Нет сделок. Добавь первую! 🚀</p></td></tr>';
+                winnersBody.innerHTML = '<tr><td colspan="5" class="empty-state"><p>Еще нет побед. Будут! 💪</p></td></tr>';
+                lossesBody.innerHTML = '<tr><td colspan="5" class="empty-state"><p>Еще нет поражений. Будут учиться! 📚</p></td></tr>';
+                return;
+            }
+
+            // Sort trades by date (newest first)
+            const sortedTrades = [...trades].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            sortedTrades.forEach(trade => {
+                const priceDiff = trade.type === 'long' ? trade.exitPrice - trade.entryPrice : trade.entryPrice - trade.exitPrice;
+                const pnl = priceDiff * trade.positionSize;
+                const pnlPercent = (priceDiff / trade.entryPrice * 100).toFixed(2);
+                const risk = Math.abs(trade.entryPrice - trade.stopLoss) * trade.positionSize;
+                const isWin = pnl >= 0;
+
+                const typeDisplay = trade.type === 'long' ? '📈 ЛОНГ' : '📉 ШОРТ';
+                const pnlClass = isWin ? 'trade-positive' : 'trade-negative';
+                const pnlText = (isWin ? '+' : '') + pnl.toFixed(2);
+
+                // All trades
+                const allRow = `
+                    <tr>
+                        <td>${trade.date}</td>
+                        <td><strong>${trade.coin}</strong></td>
+                        <td>${typeDisplay}</td>
+                        <td>$${trade.entryPrice.toFixed(2)} / $${trade.exitPrice.toFixed(2)}</td>
+                        <td>${trade.positionSize}</td>
+                        <td>$${risk.toFixed(2)}</td>
+                        <td class="${pnlClass}">$${pnlText}</td>
+                        <td class="${pnlClass}">${(isWin ? '+' : '')}${pnlPercent}%</td>
+                        <td><button class="btn btn-danger" onclick="deleteTrade(${trade.id})">🗑️</button></td>
+                    </tr>
+                `;
+                allBody.innerHTML += allRow;
+
+                // Winners/Losers
+                if (isWin) {
+                    const winRow = `
+                        <tr>
+                            <td>${trade.date}</td>
+                            <td><strong>${trade.coin}</strong></td>
+                            <td>$${trade.entryPrice.toFixed(2)} → $${trade.exitPrice.toFixed(2)}</td>
+                            <td class="trade-positive">+$${pnl.toFixed(2)}</td>
+                            <td class="trade-positive">+${pnlPercent}%</td>
+                        </tr>
+                    `;
+                    winnersBody.innerHTML += winRow;
+                } else {
+                    const loseRow = `
+                        <tr>
+                            <td>${trade.date}</td>
+                            <td><strong>${trade.coin}</strong></td>
+                            <td>$${trade.entryPrice.toFixed(2)} → $${trade.exitPrice.toFixed(2)}</td>
+                            <td class="trade-negative">-$${Math.abs(pnl).toFixed(2)}</td>
+                            <td class="trade-negative">${pnlPercent}%</td>
+                        </tr>
+                    `;
+                    lossesBody.innerHTML += loseRow;
+                }
+            });
+
+            if (winnersBody.innerHTML === '') {
+                winnersBody.innerHTML = '<tr><td colspan="5" class="empty-state"><p>Еще нет побед. Будут! 💪</p></td></tr>';
+            }
+            if (lossesBody.innerHTML === '') {
+                lossesBody.innerHTML = '<tr><td colspan="5" class="empty-state"><p>Еще нет поражений. Будут учиться! 📚</p></td></tr>';
+            }
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function deleteTrade(id) {
+            if (confirm('Ты уверен? Эту сделку нельзя восстановить!')) {
+                trades = trades.filter(t => t.id !== id);
+                localStorage.setItem('trades', JSON.stringify(trades));
+                updateUI();
+            }
+        }
+
+        function exportToCSV() {
+            if (trades.length === 0) {
+                alert('Нет сделок для экспорта!');
+                return;
+            }
+
+            let csv = 'Дата,Монета,Тип,Вход,Выход,Стоп,Размер,P&L,Риск,Причина,Комментарий\n';
+            
+            trades.forEach(trade => {
+                const priceDiff = trade.type === 'long' ? trade.exitPrice - trade.entryPrice : trade.entryPrice - trade.exitPrice;
+                const pnl = (priceDiff * trade.positionSize).toFixed(2);
+                const risk = (Math.abs(trade.entryPrice - trade.stopLoss) * trade.positionSize).toFixed(2);
+                
+                csv += `${trade.date},"${trade.coin}","${trade.type}","${trade.entryPrice}","${trade.exitPrice}","${trade.stopLoss}","${trade.positionSize}","${pnl}","${risk}","${trade.reason}","${trade.comment}"\n`;
+            });
+
+            const link = document.createElement('a');
+            link.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+            link.download = 'trading_journal_' + new Date().toISOString().split('T')[0] + '.csv';
+            link.click();
+        }
+
+        // Initial render
+        updateUI();
+    </script>
+</body>
+</html>
